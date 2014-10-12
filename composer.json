@@ -1,0 +1,40 @@
+{
+    "name": "giuseppe-mazzapica/wps",
+    "description": "WordPress plugin for whoops error handler.",
+    "keywords": [
+        "wordpress",
+        "whoops",
+        "error"
+    ],
+    "type": "wordpress-plugin",
+    "homepage": "https://github.com/giuseppe-mazzapica/WPS",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Giuseppe Mazzapica",
+            "email": "giuseppe.mazzapica@gmail.com",
+            "homepage": "http://gm.zoomlab.it"
+        },
+        {
+            "name": "Andrey Savchenko",
+            "email": "contact@rarst.net",
+            "homepage": "http://www.Rarst.net/"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/iuseppe-mazzapica/WPS/issues"
+    },
+    "require": {
+        "composer/installers": "~1.0",
+        "filp/whoops": "~1.0",
+        "pimple/pimple": "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "GM\\WPS\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
