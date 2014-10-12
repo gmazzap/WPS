@@ -7,9 +7,6 @@ class WP implements ProviderInterface {
     }
 
     public function getInfo() {
-        if ( ! $this->isAvailable() ) {
-            return [ ];
-        }
         $output = get_object_vars( $GLOBALS[ 'wp' ] );
         unset( $output[ 'private_query_vars' ] );
         unset( $output[ 'public_query_vars' ] );

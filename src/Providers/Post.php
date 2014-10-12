@@ -7,11 +7,11 @@ class Post implements ProviderInterface {
     }
 
     public function getInfo() {
-        return $this->isAvailable() ? get_object_vars( get_post() ) : [ ];
+        return is_object( get_post() ) ? get_object_vars( get_post() ) : [ ];
     }
 
     public function isAvailable() {
-        return get_post() instanceof \WP_Post;
+        return TRUE;
     }
 
 }

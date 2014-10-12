@@ -7,9 +7,6 @@ class WPQuery implements ProviderInterface {
     }
 
     public function getInfo() {
-        if ( ! $this->isAvailable() ) {
-            return [ ];
-        }
         $output = get_object_vars( $GLOBALS[ 'wp_query' ] );
         $output[ 'query_vars' ] = array_filter( $output[ 'query_vars' ] );
         unset( $output[ 'posts' ] );

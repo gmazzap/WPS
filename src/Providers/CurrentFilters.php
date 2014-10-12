@@ -7,7 +7,7 @@ class CurrentFilters implements ProviderInterface {
     }
 
     public function getInfo() {
-        return $this->isAvailable() ? (array) $GLOBALS[ 'wp_current_filter' ] : [ ];
+        return (array) $GLOBALS[ 'wp_current_filter' ];
     }
 
     public function isAvailable() {
