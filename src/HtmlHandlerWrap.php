@@ -2,7 +2,7 @@
 
 use Whoops\Handler\HandlerInterface;
 
-class HtmlHandlerWrap implements ProviderableHandlerWrapInteface {
+class HtmlHandlerWrap implements ProviderableHandlerWrapInterface {
 
     private $handler;
     private $providers;

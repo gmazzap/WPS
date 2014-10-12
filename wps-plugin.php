@@ -43,14 +43,14 @@ function getContainer() {
     return $container;
 }
 
-add_action( 'wps_html_handler', function( ProviderableHandlerWrapInteface $wrap ) {
+add_action( 'wps_html_handler', function( ProviderableHandlerWrapInterface $wrap ) {
     $container = getContainer();
     foreach ( (array) $container[ 'base_providers' ] as $id ) {
         $wrap->addProvider( $container[ "providers.{$id}" ] );
     }
 }, 0 );
 
-add_action( 'wps_html_handler_admin', function( ProviderableHandlerWrapInteface $wrap ) {
+add_action( 'wps_html_handler_admin', function( ProviderableHandlerWrapInterface $wrap ) {
     $container = getContainer();
     $wrap->addProvider( $container[ "providers.screen" ] );
 }, 0 );

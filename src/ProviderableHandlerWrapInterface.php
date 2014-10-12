@@ -1,6 +1,6 @@
 <?php namespace GM\WPS;
 
-interface ProviderableHandlerWrapInteface extends HandlerWrapInterface {
+interface ProviderableHandlerWrapInterface extends HandlerWrapInterface {
 
     /**
      * @param \GM\WPS\Providers\ProviderInterface $provider
