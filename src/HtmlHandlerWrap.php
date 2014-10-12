@@ -27,21 +27,19 @@ class HtmlHandlerWrap implements ProviderableHandlerWrapInterface {
     public function setup() {
         $this->fireHooks();
         $handler = $this->getHandler();
-        if ( ! $this->setupProviders( $handler ) > 0 ) {
-            return NULL;
+        if ( $this->setupProviders( $handler ) > 0 ) {
+            $this->setupEditor( $handler );
+            return $handler;
         }
-        $this->setupEditor( $handler );
-        return $handler;
     }
 
     private function fireHooks() {
-        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-            return;
-        }
         // Hooks to be used to add providers by calling addProvider() method on passed object
-        do_action( 'wps_html_handler', $this );
-        $side = is_admin() ? 'admin' : 'front';
-        do_action( "wps_html_handler_{$side}", $this );
+        if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+            do_action( 'wps_html_handler', $this );
+            $side = is_admin() ? 'admin' : 'front';
+            do_action( "wps_html_handler_{$side}", $this );
+        }
     }
 
     private function setupProviders( HandlerInterface $handler ) {
@@ -64,6 +62,7 @@ class HtmlHandlerWrap implements ProviderableHandlerWrapInterface {
         $editor = apply_filters( 'woops_editor', $phpstorm );
         if ( in_array( $editor, [ 'sublime', 'emacs', 'textmate', 'macvim' ], TRUE ) ) {
             $handler->setEditor( $editor );
+            return;
         }
         if ( is_array( $editor ) && count( $editor ) === 2 ) {
             $name = filter_var( array_shift( $editor ), FILTER_SANITIZE_STRING );
