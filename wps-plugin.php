@@ -31,6 +31,10 @@
   DEALINGS IN THE SOFTWARE.
  */
 
+if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG || ! defined( 'WP_DEBUG_DISPLAY' ) || ! WP_DEBUG_DISPLAY ) {
+    return;
+}
+
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
     require __DIR__ . '/vendor/autoload.php';
 }
@@ -43,22 +47,20 @@ function getContainer() {
     return $container;
 }
 
-add_action( 'wps_html_handler', function( ProviderableHandlerWrapInterface $wrap ) {
+add_action( 'wps_html_handler', function( ProviderableInterface $wrap ) {
     $container = getContainer();
     foreach ( (array) $container[ 'base_providers' ] as $id ) {
         $wrap->addProvider( $container[ "providers.{$id}" ] );
     }
 }, 0 );
 
-add_action( 'wps_html_handler_admin', function( ProviderableHandlerWrapInterface $wrap ) {
+add_action( 'wps_html_handler_admin', function( ProviderableInterface $wrap ) {
     $container = getContainer();
     $wrap->addProvider( $container[ "providers.screen" ] );
 }, 0 );
 
-if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY ) {
-    $wps_container = getContainer();
-    $wps_container[ 'extension' ]
-        ->addHandlerWrap( $wps_container[ 'wraps.html' ] )
-        ->addHandlerWrap( $wps_container[ 'wraps.json' ] )
-        ->run();
-}
+$wps_container = getContainer();
+$wps_container[ 'extension' ]
+    ->addHandlerWrap( $wps_container[ 'wraps.html' ] )
+    ->addHandlerWrap( $wps_container[ 'wraps.json' ] )
+    ->run();
