@@ -1,13 +1,9 @@
 {
     "name": "giuseppe-mazzapica/wps",
     "description": "WordPress plugin for whoops error handler.",
-    "keywords": [
-        "wordpress",
-        "whoops",
-        "error"
-    ],
+    "keywords": ["wordpress", "whoops", "error"],
     "type": "wordpress-plugin",
-    "homepage": "https://github.com/giuseppe-mazzapica/WPS",
+    "homepage": "https://github.com/Giuseppe-Mazzapica/WPS",
     "license": "MIT",
     "authors": [
         {
@@ -22,9 +18,11 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/iuseppe-mazzapica/WPS/issues"
+        "issues": "https://github.com/Giuseppe-Mazzapica/WPS/issues",
+        "source": "https://github.com/Giuseppe-Mazzapica/ATP"
     },
     "require": {
+        "php": ">=5.4",
         "composer/installers": "~1.0",
         "filp/whoops": "~1.0",
         "pimple/pimple": "~3.0"
