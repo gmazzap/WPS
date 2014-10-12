@@ -39,17 +39,20 @@ function getContainer() {
     static $container = NULL;
     if ( is_null( $container ) ) {
         $container = new Container;
+        $container[ 'base_providers' ] = [ 'wp', 'wp_query', 'post', 'currentfilters' ];
     }
     return $container;
 }
 
 add_action( 'wps_html_handler', function( ProviderableHandlerWrapInteface $wrap ) {
     $container = getContainer();
-    $wrap->addProvider( $container[ 'providers.wp' ] );
-    $wrap->addProvider( $container[ 'providers.wp_query' ] );
-    $wrap->addProvider( $container[ 'providers.post' ] );
-    $wrap->addProvider( $container[ 'providers.currentfilters' ] );
-} );
+    foreach ( (array) $container[ 'base_providers' ] as $id ) {
+        $wrap->addProvider( $container[ "providers.{$id}" ] );
+    }
+    if ( is_admin() ) {
+        $wrap->addProvider( $container[ "providers.screen" ] );
+    }
+}, 0 );
 
 if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY ) {
     $wps_container = getContainer();
