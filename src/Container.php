@@ -37,7 +37,8 @@ class Container extends \Pimple\Container {
             },
             'extension' => function($c) {
                 return new WhoopsExtension( $c[ 'whoops' ] );
-            }
+            },
+            'base_providers' => [ 'wp', 'wp_query', 'post', 'currentfilters' ]
         ];
 
         parent::__construct( array_merge( $defaults, $values ) );
