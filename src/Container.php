@@ -23,6 +23,9 @@ class Container extends \Pimple\Container {
             'providers.currentfilters' => function() {
                 return new Providers\CurrentFilters;
             },
+            'providers.screen' => function() {
+                return new Providers\WPScreen;
+            },
             'wraps.html' => function($c) {
                 return new HtmlHandlerWrap( $c[ 'handlers.pretty' ] );
             },
