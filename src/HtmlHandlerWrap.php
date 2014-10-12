@@ -58,16 +58,12 @@ class HtmlHandlerWrap implements HandlerWrapInterface, ProviderableInterface {
     }
 
     private function setupEditor( HandlerInterface $handler ) {
-        $phpstorm = [ 'phpstorm', 'http://localhost:8091?message=%file:%line' ];
-        $editor = apply_filters( 'woops_editor', $phpstorm );
-        if ( in_array( $editor, [ 'sublime', 'emacs', 'textmate', 'macvim' ], TRUE ) ) {
+        $editor = apply_filters( 'woops_editor', NULL );
+        if (
+            is_callable( $editor )
+            || in_array( $editor, [ 'sublime', 'emacs', 'textmate', 'macvim' ], TRUE )
+        ) {
             $handler->setEditor( $editor );
-            return;
-        }
-        if ( is_array( $editor ) && count( $editor ) === 2 ) {
-            $name = filter_var( array_shift( $editor ), FILTER_SANITIZE_STRING );
-            $resolver = filter_var( array_shift( $editor ), FILTER_SANITIZE_URL );
-            $handler->addEditor( $name, $resolver );
         }
     }
 
