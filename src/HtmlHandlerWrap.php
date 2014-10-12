@@ -25,12 +25,27 @@ class HtmlHandlerWrap implements ProviderableHandlerWrapInteface {
     }
 
     public function setup() {
-        /**
-         * Hook to be used to add providers by calling addProvider() method on passed object ($this)
-         */
-        do_action( 'wps_html_handler', $this );
-        $providers = $this->getProviders();
+        $this->fireHooks();
         $handler = $this->getHandler();
+        if ( ! $this->setupProviders( $handler ) > 0 ) {
+            return NULL;
+        }
+        $this->setupEditor( $handler );
+        return $handler;
+    }
+
+    private function fireHooks() {
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+            return;
+        }
+        // Hooks to be used to add providers by calling addProvider() method on passed object
+        do_action( 'wps_html_handler', $this );
+        $side = is_admin() ? 'admin' : 'front';
+        do_action( "wps_html_handler_{$side}", $this );
+    }
+
+    private function setupProviders( HandlerInterface $handler ) {
+        $providers = $this->getProviders();
         $providers->rewind();
         while ( $providers->valid() ) {
             /** @var \GM\WPS\ProviderInterface $provider */
@@ -41,6 +56,10 @@ class HtmlHandlerWrap implements ProviderableHandlerWrapInteface {
             $handler->addDataTableCallback( $provider->getName(), $callback );
             $providers->next();
         }
+        return $providers->count();
+    }
+
+    private function setupEditor( HandlerInterface $handler ) {
         $phpstorm = [ 'phpstorm', 'http://localhost:8091?message=%file:%line' ];
         $editor = apply_filters( 'woops_editor', $phpstorm );
         if ( in_array( $editor, [ 'sublime', 'emacs', 'textmate', 'macvim' ], TRUE ) ) {
@@ -51,7 +70,6 @@ class HtmlHandlerWrap implements ProviderableHandlerWrapInteface {
             $resolver = filter_var( array_shift( $editor ), FILTER_SANITIZE_URL );
             $handler->addEditor( $name, $resolver );
         }
-        return $providers->count() > 0 ? $handler : NULL;
     }
 
 }
