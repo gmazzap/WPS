@@ -35,8 +35,21 @@ class HtmlHandlerWrap implements ProviderableHandlerWrapInteface {
         while ( $providers->valid() ) {
             /** @var \GM\WPS\ProviderInterface $provider */
             $provider = $providers->current();
-            $handler->addDataTableCallback( $provider->getName(), [ $provider, 'getInfo' ] );
+            $callback = function() use($provider) {
+                return $provider->isAvailable() ? $provider->getInfo() : NULL;
+            };
+            $handler->addDataTableCallback( $provider->getName(), $callback );
             $providers->next();
+        }
+        $phpstorm = [ 'phpstorm', 'http://localhost:8091?message=%file:%line' ];
+        $editor = apply_filters( 'woops_editor', $phpstorm );
+        if ( in_array( $editor, [ 'sublime', 'emacs', 'textmate', 'macvim' ], TRUE ) ) {
+            $handler->setEditor( $editor );
+        }
+        if ( is_array( $editor ) && count( $editor ) === 2 ) {
+            $name = filter_var( array_shift( $editor ), FILTER_SANITIZE_STRING );
+            $resolver = filter_var( array_shift( $editor ), FILTER_SANITIZE_URL );
+            $handler->addEditor( $name, $resolver );
         }
         return $providers->count() > 0 ? $handler : NULL;
     }
