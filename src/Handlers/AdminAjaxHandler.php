@@ -35,7 +35,7 @@ class AdminAjaxHandler extends JsonResponseHandler {
         if ( Misc::canSendHeaders() ) {
             header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
         }
-        echo json_encode( $response );
+        echo json_encode( $response, JSON_PRETTY_PRINT );
         return Handler::QUIT;
     }
 
